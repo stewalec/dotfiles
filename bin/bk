@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Adapted from: https://github.com/thexhr/openbsd-timemachine
+
+# Copyright (c) 2022 Matthias Schmidt <xhr@giessen.ccc.de>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+# Device we are backing up (i.e. codex)
+HOSTNAME=$(hostname)
+# Device label determined when drive was formatted
+LABEL=$1
+# Device mount point
+MNTPT=/run/media/$USER/$LABEL
+# Location to counter file
+CNTF=$MNTPT/$HOSTNAME/.counter
+
+# Missing LABEL argument
+if [[ -z $LABEL ]]; then
+    echo "$(basename $0): Label name missing. Abort"
+    exit 1
+fi
+
+if [[ -z $(mount | grep ${MNTPT}) ]]; then
+    echo "$(basename $0): Mount point $MNTPT has no device attached. Abort"
+    exit 1
+fi
+
+# First backup of its kind
+if [[ ! -f ${CNTF} ]]; then
+    echo "1" > $CNTF
+fi
+ 
+# Run backup type based on iteration
+i=$(cat $CNTF)
+if [ $((i%8)) -eq 0 ]; then
+    echo "--> Iteration ${i}, running rsnapshot gamma backup to disk..."
+    rsnapshot -c /etc/rsnapshot-$HOSTNAME.conf gamma
+elif [ $((i%4)) -eq 0 ]; then
+    echo "--> Iteration ${i}, running rsnapshot beta backup to disk..."
+    rsnapshot -c /etc/rsnapshot-$HOSTNAME.conf beta
+else
+    echo "--> Iteration ${i}, running rsnapshot alpha backup to disk..."
+    rsnapshot -c /etc/rsnapshot-$HOSTNAME.conf alpha
+fi
+echo $((i+=1)) > $CNTF
+
+sync
+
+echo "--> Backup complete!"
+exit $?

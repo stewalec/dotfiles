@@ -1,0 +1,17 @@
+[user]
+    name = Alec Stewart
+    email = alec@alecstewart.com
+    signingkey = A082D7A48F82CEAE
+[core]
+    editor = vim
+[instaweb]
+    browser = firefox
+[init]
+    defaultBranch = main
+[commit]
+    gpgsign = true
+    verbose = true
+[tag]
+    gpgsign = true
+[color]
+    ui = true

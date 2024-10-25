@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Adapted from: https://github.com/thexhr/openbsd-timemachine
+
+# Copyright (c) 2022 Matthias Schmidt <xhr@giessen.ccc.de>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+# Device we are backing up (i.e. codex)
+HOSTNAME=$(hostname)
+# Device label determined when drive was formatted
+LABEL=$1
+# Device mount point
+MNTPT=/run/media/$USER/$LABEL
+
+# Wrong number of arguments
+if [[ -z $LABEL ]]; then
+    logger -i -t error "$(basename $0): Label name missing. Abort"
+    echo "$(basename $0): Label name missing. Abort"
+    exit 1
+fi
+
+if [[ -z $(mount | grep ${MNTPT}) ]]; then
+    logger -i -t error "$(basename $0): Mount point $MNTPT has no device attached. Abort"
+    echo "$(basename $0): Mount point $MNTPT has no device attached. Abort"
+    exit 1
+fi
+
+# rclone backup to encrypted remote
+echo "--> Running rclone backup to encrypted remote..."
+logger "$(basename $0): rclone backup to encrypted remote started"
+rclone copy \
+    --verbose=2 \
+    --fast-list \
+    --progress \
+    --transfers=32 \
+    --local-no-check-updated \
+    --log-file=/var/log/rclone.log \
+    --config=/home/alec/.config/rclone/rclone.conf \
+    $MNTPT/$HOSTNAME e-$HOSTNAME-b2:
+logger "$(basename $0): rclone backup completed"
+
+sync
+
+echo "--> Remote backup complete!" 
+exit $?

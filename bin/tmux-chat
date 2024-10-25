@@ -1,0 +1,5 @@
+#!/bin/sh
+
+tmux new-session -d -A -s chat -n email aerc
+tmux new-window -d -n irc senpai
+tmux attach-session -d -t chat

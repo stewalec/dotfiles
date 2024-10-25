@@ -1,0 +1,17 @@
+#!/bin/sh
+# From: https://jeffkreeftmeijer.com/git-multiple-remotes/
+
+CODEBERG_USERNAME=stewalec
+GITHUB_USERNAME=stewalec
+
+PROJECT=${PWD##*/}
+
+git remote add codeberg git@codeberg.org:$CODEBERG_USERNAME/$PROJECT.git
+git remote add github git@github.com:$GITHUB_USERNAME/$PROJECT.git
+git remote add origin git@codeberg.org:$CODEBERG_USERNAME/$PROJECT.git
+git remote set-url --add --push origin git@codeberg.org:$CODEBERG_USERNAME/$PROJECT.git
+git remote set-url --add --push origin git@github.com:$GITHUB_USERNAME/$PROJECT.git
+git remote -v
+
+echo "\nWhen you are ready to push, use the following command:\n"
+echo "\tgit push -u origin main\n"
