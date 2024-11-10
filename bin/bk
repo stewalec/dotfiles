@@ -21,7 +21,7 @@ HOSTNAME=$(hostname)
 # Device label determined when drive was formatted
 LABEL=$1
 # Device mount point
-MNTPT=/run/media/$USER/$LABEL
+MNTPT=/run/media/alec/$LABEL
 # Location to counter file
 CNTF=$MNTPT/$HOSTNAME/.counter
 

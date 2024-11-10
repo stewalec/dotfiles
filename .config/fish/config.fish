@@ -5,6 +5,7 @@ set -g fish_key_bindings fish_vi_key_bindings
 set -gx GOPROXY direct
 set -gx GOTELEMETRY off
 set -gx GOTOOLCHAIN local
+set -gx GOPATH ~/dev/go
 
 set -gx EDITOR vim
 set -gx PAGER less

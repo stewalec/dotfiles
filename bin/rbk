@@ -21,7 +21,7 @@ HOSTNAME=$(hostname)
 # Device label determined when drive was formatted
 LABEL=$1
 # Device mount point
-MNTPT=/run/media/$USER/$LABEL
+MNTPT=/run/media/alec/$LABEL
 
 # Wrong number of arguments
 if [[ -z $LABEL ]]; then
