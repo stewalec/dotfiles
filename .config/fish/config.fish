@@ -22,8 +22,10 @@ end
 base16-gruvbox-dark-soft
 
 # abbreviations & aliases
+abbr L --position anywhere --set-cursor "% | less -R"
 abbr c "codium"
 abbr tn "tmux new -s"
-abbr L --position anywhere --set-cursor "% | less -R"
 abbr x "exit"
+
+alias dotfiles "/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 alias ll "LC_COLLATE=C ls -lAh --group-directories-first"
