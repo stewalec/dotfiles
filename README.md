@@ -13,11 +13,11 @@ Then...
 
 ```
 git clone --bare https://codeberg.org/stewalec/dotfiles $HOME/.dotfiles
-cd $HOME/.dotfiles
-dotfiles submodule update --init --recursive
+alias dotfiles "/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 dotfiles config --local status.showUntrackedFiles no
 rm ~/.config/fish/config.fish ~/.config/user-dirs.dirs
 dotfiles checkout
+dotfiles submodule update --init --recursive
 ./move-in.sh
 ```
 
