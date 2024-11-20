@@ -2,6 +2,8 @@
     name = Alec Stewart
     email = alec@alecstewart.com
     signingkey = A082D7A48F82CEAE
+[gpg]
+    format = ssh
 [core]
     editor = vim
 [instaweb]
