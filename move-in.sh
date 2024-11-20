@@ -5,7 +5,7 @@
 
 set -e
 
-PKGS="codium distrobox gcr keepassxc podman printer-driver-brlaser thunderbird rclone rsnapshot vim"
+PKGS="codium gcr keepassxc podman thunderbird rclone rsnapshot vim"
 
 # $HOME cleanup
 rm -rf ~/Desktop ~/Public ~/Templates
@@ -15,7 +15,7 @@ for f in Documents Downloads Music Pictures Videos; do
 done
 
 # sddm autologin
-sudo tee -a /etc/sddm.conf.d/autologin.conf > /dev/null << EOF
+sudo tee -a /etc/sddm.conf.d/autologin.conf > /dev/null <<EOF
 [Autologin]
 User=$USER
 Session=sway.desktop
@@ -23,7 +23,8 @@ EOF
 
 # add ~/bin and ~/.local/bin to fish $PATH
 mkdir -p ~/.local/bin
-fish -c "fish_add_path ~/.local/bin ~/bin"
+fish -c "fish_add_path ~/.local/bin"
+fish -c "fish_add_path ~/bin"
 
 # vscodium
 sudo rpmkeys --import https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg

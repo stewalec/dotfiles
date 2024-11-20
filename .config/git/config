@@ -1,7 +1,7 @@
 [user]
     name = Alec Stewart
     email = alec@alecstewart.com
-    signingkey = A082D7A48F82CEAE
+    signingkey = /home/alec/.ssh/alecstewart.pub
 [gpg]
     format = ssh
 [core]

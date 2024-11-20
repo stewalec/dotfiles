@@ -1,0 +1,24 @@
+#!/bin/sh
+
+VERSION=0.139.0
+CHECKSUM="https://github.com/gohugoio/hugo/releases/download/v${VERSION}/hugo_${VERSION}_checksums.txt"
+BINARY="https://github.com/gohugoio/hugo/releases/download/v${VERSION}/hugo_extended_${VERSION}_linux-amd64.tar.gz"
+
+mkdir -p ~/.local/bin/tmp
+cd ~/.local/bin/tmp
+
+wget $CHECKSUM
+wget $BINARY
+
+echo "Checking file integrity..."
+sha256sum -c ~/.local/bin/tmp/hugo_${VERSION}_checksums.txt 2>&1 | grep OK
+
+if [ $? -eq 0 ]; then
+    tar xzf hugo_extended_${VERSION}_linux-amd64.tar.gz
+    mv hugo ~/.local/bin
+    cd ~/.local/bin
+    rm -rf ~/.local/bin/tmp
+    echo "Hugo updated to v$VERSION."
+else
+    echo "File integrity checksum failed! Exiting..."
+fi
