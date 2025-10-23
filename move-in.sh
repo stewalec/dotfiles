@@ -23,6 +23,7 @@ EOF
 
 # add ~/bin and ~/.local/bin to fish $PATH
 mkdir -p ~/.local/bin
+fish -c "fish_add_path /usr/local/go/bin"
 fish -c "fish_add_path ~/.local/bin"
 fish -c "fish_add_path ~/bin"
 
